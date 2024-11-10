@@ -9,7 +9,7 @@ workflows:
         script: flutter pub get
 
     # Build Android APK
-    scripts:
+   
       - name: Build APK
         script: flutter build apk --release
       - name: Générer un AAB (optionnel)
