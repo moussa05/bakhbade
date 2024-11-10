@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Nom de l'application -->
+    <string name="app_name">BakhBaDé Academy</string>
+    <string name="bakhbade">BakhBaDé</string>
+
+    <!-- Clés pour l'authentification Facebook -->
+    <string name="facebook_app_id">1547412082723440</string>
+    <string name="fb_login_protocol_scheme">fb1547412082723440</string>
+    <string name="facebook_client_token">24dc88f727eeeae8dfc304873511e12a</string>
+</resources>

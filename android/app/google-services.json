@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "864261936480",
+    "project_id": "bakhbade-4daa5",
+    "storage_bucket": "bakhbade-4daa5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864261936480:android:c80b904b29e5ce8246ba05",
+        "android_client_info": {
+          "package_name": "com.example.bakhbade"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdEklA6hdDcRVUDHNrWAbOxfk4EU_778Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864261936480:android:e159cc233b116c8046ba05",
+        "android_client_info": {
+          "package_name": "com.example.khoule_et_frere"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdEklA6hdDcRVUDHNrWAbOxfk4EU_778Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

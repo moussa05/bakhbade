@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
       TravelBookingPage(
         controller: (_controller),
       ),
-      const FormationHomeScreen(),
+      FormationListScreen(),
       const CommerceHomeScreen(),
     ];
     return Scaffold(

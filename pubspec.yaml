@@ -46,6 +46,11 @@ dependencies:
   flutter_dotenv: ^5.2.1
   sqflite: ^2.3.3+1
   path: ^1.9.0
+  firebase_core: ^3.4.0
+  firebase_dynamic_links: ^6.0.5
+  card_swiper: ^3.0.1
+  flutter_facebook_auth: ^7.1.0
+  
 
 dev_dependencies:
   flutter_test:
@@ -92,6 +97,11 @@ flutter:
     - assets/icon/launcher.png
     - assets/icon/backgroundimage.png
     - assets/logo.png
+    - assets/tickeslider.png
+    - assets/welcome/ticket.png
+    - assets/welcome/achats.png
+    - assets/welcome/colis.png
+    - assets/welcome/formation.png
     - .env
   #   - images/a_dot_ham.jpeg
 

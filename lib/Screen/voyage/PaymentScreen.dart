@@ -96,9 +96,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
         // Define the success and error URLs
         String errorUrl =
-            'https://khoulefreres.com/booking/${jsonResponse["data"]["id"]}';
+            'https://khoulesfrere.dynalinks.app/booking/${jsonResponse["data"]["id"]}';
         String successUrl =
-            'https://khoulefreres.com/booking/${jsonResponse["data"]["id"]}';
+            'https://khoulesfrere.dynalinks.app/booking/${jsonResponse["data"]["id"]}';
         double amount = (jsonResponse["data"]["price"])
             .toDouble(); // Assuming "price" holds the payment amount
 

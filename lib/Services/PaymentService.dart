@@ -41,15 +41,14 @@ class PaymentService {
   }) async {
     final accessToken = await getOrangeMoneyToken();
     String merchantName = "réservation_sur_Bakhbadé";
+
     if (accessToken == null) {
       return 'Erreur : Impossible d\'obtenir le jeton d\'accès';
     }
 
-    final callbackSuccessUrl =
-        "https://www.khoulefreres.com/booking/$bookingId";
-    final callbackCancelUrl = "https://www.khoulefreres.com/booking/$bookingId";
-    final codeMarchand =
-        dotenv.env['IDORANGEMONEY'] ?? ''; // Code marchand à définir dans .env
+    final callbackSuccessUrl = "https://khoulesfrere.dynalinks.app/$bookingId";
+    final callbackCancelUrl = "https://khoulesfrere.dynalinks.app/$bookingId";
+    final codeMarchand = dotenv.env['IDORANGEMONEY'] ?? '';
 
     final headers = {
       'Content-Type': 'application/json',
@@ -58,13 +57,13 @@ class PaymentService {
     final body = json.encode({
       "amount": {
         "unit": "XOF",
-        "value": amount.toString(),
+        "value": amount, // Direct double value instead of String
       },
       "callbackCancelUrl": callbackCancelUrl,
       "callbackSuccessUrl": callbackSuccessUrl,
       "code": codeMarchand,
       "metadata": {
-        "booking": bookingId.toString(),
+        "booking": bookingId, // Ensure bookingId is an integer
       },
       "name": merchantName,
       "validity": 15,
@@ -102,7 +101,7 @@ class PaymentService {
           'XSRF-TOKEN=eyJpdiI6InRnenRwd2V4V0M5SFBzTFQrYm92N2c9PSIsInZhbHVlIjoiUTZUYTFCQ0dxWVBSb0IxRTFWeE1HT3JiOUhYRkF6ZzRcL0xlU2VWbnQ5dXVTRm9DSlVQeXp4Ujl5NE5BMlwvZFI2IiwibWFjIjoiYTdjMzc3MWI4ZDIyMjE0MTk2OTZmZWJmMjBjN2YwYzAyMThmYjI5NWIzYWQzYjZmODhiZGYxNmNjMGRmYWQxOCJ9; _session=eyJpdiI6IkI4aGhBTnVsbEROTTRlNndNVUFMRVE9PSIsInZhbHVlIjoiSzFNbDdPSnlNOFEyMkgxeGg1cTduT1ZTSlVoRDdPbXl5N3F5eVY4amVEaWs0cWtPUjZaSXN6XC9uWDZIUVNuZngiLCJtYWMiOiJlMTQ2NmQwZTRiZWYxZWNlZWU4OWJhMzVlYzBiNTY3YzUzNDUxMmRkNDkwZjhiMWYzMTM1NWMxMmUwNGE2N2YzIn0%3D'
     };
     final body = json.encode({
-      "amount": amount.toString(),
+      "amount": amount, // Use double directly for numeric precision
       "currency": "XOF",
       "error_url": errorUrl,
       "success_url": successUrl,
