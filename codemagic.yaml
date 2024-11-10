@@ -10,10 +10,7 @@ workflows:
 
     # Build Android APK
    
-      - name: Build APK
-        script: flutter build apk --release
-      - name: Générer un AAB (optionnel)
-        script: flutter build appbundle --release
+    
       - name: Build iOS IPA
         script: flutter build ipa --release
 
