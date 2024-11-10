@@ -4,19 +4,23 @@ workflows:
     environment:
       flutter: stable
       xcode: latest
-      cocoapods: default
     scripts:
       - name: Installer les dépendances Flutter
-        script: |
-          flutter pub get
+        script: flutter pub get
 
-    android:
-      build: apk # Pour générer un APK Android
-      artifact_name: app-release.apk
+    # Build Android APK
+    scripts:
+      - name: Build APK
+        script: flutter build apk --release
+      - name: Générer un AAB (optionnel)
+        script: flutter build appbundle --release
+      - name: Build iOS IPA
+        script: flutter build ipa --release
 
-    ios:
-      build: ipa # Pour générer un fichier .ipa iOS
-      export_method: app-store # ou 'ad-hoc' pour le test
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
+      - build/ios/ipa/*.ipa
+
     publishing:
       email:
         recipients:
