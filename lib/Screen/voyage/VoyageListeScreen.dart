@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:bakhbade/Screen/voyage/DepartureArrivalScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -6,6 +5,7 @@ import 'dart:convert';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:social_share/social_share.dart';
+import 'package:flutter/material.dart';
 
 class VoyageListeScreen extends StatefulWidget {
   final int pathId; // Add pathId variable
@@ -39,6 +39,7 @@ class _VoyageListeScreenState extends State<VoyageListeScreen> {
                     title: Text('Pour moi'),
                     leading: Radio(
                       value: true,
+                      activeColor: Colors.amberAccent,
                       groupValue: isForMe,
                       onChanged: (bool? value) {
                         setState(() {
@@ -51,6 +52,7 @@ class _VoyageListeScreenState extends State<VoyageListeScreen> {
                     title: Text('Pour un autre'),
                     leading: Radio(
                       value: false,
+                      activeColor: Colors.amberAccent,
                       groupValue: isForMe,
                       onChanged: (bool? value) {
                         setState(() {
@@ -170,6 +172,7 @@ class _VoyageListeScreenState extends State<VoyageListeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.orange[50],
       appBar: AppBar(title: Text('Voyages')),
       body: isLoading
           ? Center(child: CircularProgressIndicator())

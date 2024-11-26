@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:bakhbade/Home.dart';
 import 'package:bakhbade/Screen/voyage/HomeScreen.dart';
 import 'package:bakhbade/Screen/voyage/VoyageListeScreen.dart';
 import 'package:flutter/material.dart';
@@ -71,8 +72,8 @@ class _AcueilState extends State<Acueil> {
               children: [
                 _buildIconCard(
                   label: 'Boutique',
-                  icon: Icons.shopping_cart,
-                  color: Colors.blue,
+                  imagePath: 'assets/images/boutique.png',
+                  color: const Color(0xFF4B6ECA),
                   onPressed: () async {
                     var url = Uri.parse('https://bakhbade.com/');
                     _launchUrl(url);
@@ -80,8 +81,8 @@ class _AcueilState extends State<Acueil> {
                 ),
                 _buildIconCard(
                   label: 'Yobanté',
-                  icon: Icons.delivery_dining,
-                  color: Colors.brown,
+                  imagePath: 'assets/images/yobante.png',
+                  color: const Color(0xFF84610F), // Couleur Yobanté
                   onPressed: () {
                     var url =
                         Uri.parse('https://bakhbade.com/service-yobante/');
@@ -91,8 +92,8 @@ class _AcueilState extends State<Acueil> {
                 ),
                 _buildIconCard(
                   label: 'Formation',
-                  icon: Icons.school,
-                  color: Colors.grey,
+                  imagePath: 'assets/images/formation.png',
+                  color: const Color(0xFF6D7582),
                   onPressed: () {
                     var url = Uri.parse('https://academy.bakhbade.com/');
                     _launchUrl(url);
@@ -101,12 +102,12 @@ class _AcueilState extends State<Acueil> {
                 ),
                 _buildIconCard(
                   label: 'Voyage',
-                  icon: Icons.airport_shuttle,
-                  color: Colors.orange,
+                  imagePath: 'assets/images/voyage.png',
+                  color: const Color(0xFFDA9C22),
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute<void>(
                       builder: (BuildContext context) {
-                        return const TravelBookingPage();
+                        return const Home(initialIndex: 1);
                       },
                     ));
                     // Naviguer vers une autre page ou exécuter une action
@@ -262,7 +263,7 @@ class _AcueilState extends State<Acueil> {
   // Fonction pour créer les icônes sous forme de rectangle
   Widget _buildIconCard({
     required String label,
-    required IconData icon,
+    required String imagePath,
     required Color color,
     required VoidCallback onPressed,
   }) {
@@ -287,7 +288,13 @@ class _AcueilState extends State<Acueil> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.white, size: 30),
+            Image.asset(
+              imagePath,
+              width: 30,
+              height: 30,
+              fit: BoxFit.contain,
+              color: Colors.white, // Applique une couleur si besoin
+            ),
             const SizedBox(height: 8),
             FittedBox(
               child: Text(

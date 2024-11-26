@@ -8,13 +8,24 @@ import 'package:bakhbade/Screen/voyage/PaymentScreen.dart';
 
 class DepartureArrivalScreen extends StatefulWidget {
   final int pathId;
-  final dynamic trip; // Add trip variable
+  final dynamic trip;
   final bool isForMe;
+  final String? firstName;
+  final String? lastName;
+  final String? phoneNumber;
+  final String? gender;
 
-  DepartureArrivalScreen(
-      {required this.pathId,
-      required this.trip,
-      required this.isForMe}); // Update constructor
+  DepartureArrivalScreen({
+    required this.pathId,
+    required this.trip,
+    required this.isForMe,
+    this.firstName,
+    this.lastName,
+    this.phoneNumber,
+    this.gender,
+  });
+
+// Update constructor
 
   @override
   _DepartureArrivalScreenState createState() => _DepartureArrivalScreenState();
@@ -29,10 +40,24 @@ class _DepartureArrivalScreenState extends State<DepartureArrivalScreen> {
   late final Location departure;
   late final Location arrival;
 
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  String selectedGender = 'Monsieur';
+
   @override
   void initState() {
     super.initState();
     loadPlacesData();
+  }
+
+  @override
+  void dispose() {
+    // Libération de la mémoire pour chaque TextEditingController
+    firstNameController.dispose();
+    lastNameController.dispose();
+    phoneController.dispose();
+    super.dispose();
   }
 
   Future<void> loadPlacesData() async {
@@ -80,6 +105,12 @@ class _DepartureArrivalScreenState extends State<DepartureArrivalScreen> {
           ugbList.add(place);
         }
       }
+
+      // Trier chaque liste par la valeur 'order' croissante
+      dakarList.sort(
+          (a, b) => int.parse(a['order']).compareTo(int.parse(b['order'])));
+      ugbList.sort(
+          (a, b) => int.parse(a['order']).compareTo(int.parse(b['order'])));
 
       // Save data to SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -139,6 +170,191 @@ class _DepartureArrivalScreenState extends State<DepartureArrivalScreen> {
                         child: Center(
                           child: Column(
                             children: [
+                              SizedBox(height: 16),
+                              if (!widget.isForMe)
+                                Column(
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      child: TextFormField(
+                                        controller: firstNameController,
+                                        style: TextStyle(
+                                            color: Colors
+                                                .white), // Couleur du texte saisi
+                                        cursorColor: Colors.white,
+                                        decoration: InputDecoration(
+                                          labelText: 'Prénom',
+                                          labelStyle:
+                                              TextStyle(color: Colors.white),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.white,
+                                                width: 2.0),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.grey, width: 1.0),
+                                          ),
+                                          focusedErrorBorder:
+                                              OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.red, width: 2.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 16),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      child: TextFormField(
+                                        controller: lastNameController,
+                                        style: TextStyle(
+                                            color: Colors
+                                                .white), // Couleur du texte saisi
+                                        cursorColor: Colors.white,
+                                        decoration: InputDecoration(
+                                          labelText: 'Nom',
+                                          labelStyle:
+                                              TextStyle(color: Colors.white),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.white,
+                                                width: 2.0),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.grey, width: 1.0),
+                                          ),
+                                          focusedErrorBorder:
+                                              OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.red, width: 2.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 16),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      child: TextFormField(
+                                        controller: phoneController,
+                                        keyboardType: TextInputType.phone,
+                                        style: TextStyle(
+                                            color: Colors
+                                                .white), // Couleur du texte saisi
+                                        cursorColor: Colors.white,
+                                        decoration: InputDecoration(
+                                          labelText: 'Numéro de téléphone',
+                                          labelStyle:
+                                              TextStyle(color: Colors.white),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.white,
+                                                width: 2.0),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.grey, width: 1.0),
+                                          ),
+                                          focusedErrorBorder:
+                                              OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.red, width: 2.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 16),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Colors
+                                                    .white, // Définit la couleur du contour comme blanc
+                                                width:
+                                                    2.0, // Définit l'épaisseur du contour
+                                              ),
+                                              borderRadius: BorderRadius.circular(
+                                                  5), // Pour arrondir les coins du cadre
+                                            ),
+                                            child: CheckboxListTile(
+                                              value: selectedGender ==
+                                                  'Monsieur', // Vérifie si "Monsieur" est sélectionné
+                                              onChanged: (bool? value) {
+                                                setState(() {
+                                                  if (value == true) {
+                                                    selectedGender =
+                                                        'Monsieur'; // Sélectionne "Monsieur"
+                                                  } else {
+                                                    selectedGender =
+                                                        ''; // Désélectionne "Monsieur"
+                                                  }
+                                                });
+                                              },
+                                              title: Text(
+                                                'Monsieur',
+                                                style: TextStyle(
+                                                    color: Colors
+                                                        .white), // Couleur du texte
+                                              ),
+                                              activeColor: Colors
+                                                  .yellow, // Couleur de la case à cocher sélectionnée
+                                              checkColor: Colors
+                                                  .black, // Couleur du coche
+                                            ),
+                                          ),
+                                          SizedBox(
+                                              height:
+                                                  16), // Espacement entre les cases
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Colors
+                                                    .white, // Définit la couleur du contour comme blanc
+                                                width:
+                                                    2.0, // Définit l'épaisseur du contour
+                                              ),
+                                              borderRadius: BorderRadius.circular(
+                                                  5), // Pour arrondir les coins du cadre
+                                            ),
+                                            child: CheckboxListTile(
+                                              value: selectedGender ==
+                                                  'Madame', // Vérifie si "Madame" est sélectionné
+                                              onChanged: (bool? value) {
+                                                setState(() {
+                                                  if (value == true) {
+                                                    selectedGender =
+                                                        'Madame'; // Sélectionne "Madame"
+                                                  } else {
+                                                    selectedGender =
+                                                        ''; // Désélectionne "Madame"
+                                                  }
+                                                });
+                                              },
+                                              title: Text(
+                                                'Madame',
+                                                style: TextStyle(
+                                                    color: Colors
+                                                        .white), // Couleur du texte
+                                              ),
+                                              activeColor: Colors
+                                                  .yellow, // Couleur de la case à cocher sélectionnée
+                                              checkColor: Colors
+                                                  .black, // Couleur du coche
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               SizedBox(height: 16),
                               Container(
                                 width: MediaQuery.of(context).size.width * 0.8,
@@ -254,10 +470,26 @@ class _DepartureArrivalScreenState extends State<DepartureArrivalScreen> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
+                                            backgroundColor: Colors.red,
                                             content: Text(
                                                 'Veuillez sélectionner un départ et une arrivée.')),
                                       );
                                       return;
+                                    }
+                                    // Valider les informations si ce n'est pas pour l'utilisateur lui-même
+                                    if (!widget.isForMe) {
+                                      if (firstNameController.text.isEmpty ||
+                                          lastNameController.text.isEmpty ||
+                                          phoneController.text.isEmpty ||
+                                          selectedGender == null) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(
+                                                  'Veuillez remplir tous les champs requis.')),
+                                        );
+                                        return;
+                                      }
                                     }
 
                                     Navigator.push(
@@ -269,6 +501,18 @@ class _DepartureArrivalScreenState extends State<DepartureArrivalScreen> {
                                           pathId: widget.pathId,
                                           travel: widget.trip,
                                           isForMe: widget.isForMe,
+                                          firstName: widget.isForMe
+                                              ? null
+                                              : firstNameController.text,
+                                          lastName: widget.isForMe
+                                              ? null
+                                              : lastNameController.text,
+                                          phoneNumber: widget.isForMe
+                                              ? null
+                                              : phoneController.text,
+                                          gender: widget.isForMe
+                                              ? null
+                                              : selectedGender,
                                         ),
                                       ),
                                     );
@@ -282,6 +526,7 @@ class _DepartureArrivalScreenState extends State<DepartureArrivalScreen> {
                                   ),
                                 ),
                               ),
+                              SizedBox(height: 16),
                             ],
                           ),
                         ),

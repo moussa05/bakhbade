@@ -4,8 +4,10 @@ class Booking {
   final String status;
   final double price;
   final String createdAt;
+  final String createdFormatted;
   final String departure;
   final String arrival;
+  final String point;
   final String statusText;
   final bool isPaid;
 
@@ -19,19 +21,22 @@ class Booking {
     required this.arrival,
     required this.statusText,
     required this.isPaid,
+    required this.createdFormatted,
+    required this.point,
   });
 
   factory Booking.fromJson(Map<String, dynamic> json) {
     return Booking(
-      id: json['id'],
-      reference: json['reference'],
-      status: json['status'],
-      price: json['price_from_booking'].toDouble(),
-      createdAt: json['created_at_formatted'],
-      departure: json['departure']['name'],
-      arrival: json['arrival']['name'],
-      statusText: json['status_text'],
-      isPaid: json['is_paid'],
-    );
+        id: json['id'],
+        reference: json['reference'],
+        status: json['status'],
+        price: json['price_from_booking'].toDouble(),
+        createdAt: json['created_at_formatted'],
+        departure: json['departure']['name'],
+        arrival: json['arrival']['name'],
+        statusText: json['status_text'],
+        isPaid: json['is_paid'],
+        createdFormatted: json['created_at_formatted'],
+        point: json['point']);
   }
 }

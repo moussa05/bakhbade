@@ -13,6 +13,7 @@ class _FormationListScreenState extends State<FormationListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.orange[50],
       appBar: AppBar(
         backgroundColor: Colors.orange,
       ),

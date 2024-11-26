@@ -15,6 +15,10 @@ class PaymentScreen extends StatefulWidget {
   final int pathId;
   final dynamic travel;
   final bool isForMe;
+  final String? firstName;
+  final String? lastName;
+  final String? phoneNumber;
+  final String? gender;
 
   // Constructor to accept departure and arrival values
   PaymentScreen({
@@ -23,6 +27,10 @@ class PaymentScreen extends StatefulWidget {
     required this.pathId,
     required this.travel,
     required this.isForMe,
+    this.firstName,
+    this.lastName,
+    this.phoneNumber,
+    this.gender,
   });
 
   @override
@@ -96,9 +104,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
         // Define the success and error URLs
         String errorUrl =
-            'https://khoulesfrere.dynalinks.app/booking/${jsonResponse["data"]["id"]}';
+            'https://khoulefreres.com/booking/${jsonResponse["data"]["id"]}';
         String successUrl =
-            'https://khoulesfrere.dynalinks.app/booking/${jsonResponse["data"]["id"]}';
+            'https://khoulefreres.com/booking/${jsonResponse["data"]["id"]}';
         double amount = (jsonResponse["data"]["price"])
             .toDouble(); // Assuming "price" holds the payment amount
 
@@ -250,7 +258,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       userInfo["title"],
                                       userInfo["id"]);
                                 } else {
-                                  await sendPaymentRequest(4, '', '', '', '',
+                                  String firstName = widget.firstName ?? '';
+                                  String lastName = widget.lastName ?? '';
+                                  String phoneNumber = widget.phoneNumber ?? '';
+                                  String gender = widget.gender ?? '';
+                                  await sendPaymentRequest(
+                                      4,
+                                      firstName,
+                                      lastName,
+                                      phoneNumber,
+                                      gender,
                                       0); // Send default values for non-user
                                 }
                                 print('Payer par Wave');
@@ -283,7 +300,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       userInfo["title"],
                                       userInfo["id"]);
                                 } else {
-                                  await sendPaymentRequest(0, '', '', '', '',
+                                  String firstName = widget.firstName ?? '';
+                                  String lastName = widget.lastName ?? '';
+                                  String phoneNumber = widget.phoneNumber ?? '';
+                                  String gender = widget.gender ?? '';
+                                  await sendPaymentRequest(
+                                      0,
+                                      firstName,
+                                      lastName,
+                                      phoneNumber,
+                                      gender,
                                       0); // Send default values for non-user
                                 }
                                 print('Payer par Orange Money');

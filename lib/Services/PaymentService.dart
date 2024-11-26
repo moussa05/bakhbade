@@ -46,8 +46,8 @@ class PaymentService {
       return 'Erreur : Impossible d\'obtenir le jeton d\'accès';
     }
 
-    final callbackSuccessUrl = "https://khoulesfrere.dynalinks.app/$bookingId";
-    final callbackCancelUrl = "https://khoulesfrere.dynalinks.app/$bookingId";
+    final callbackSuccessUrl = "https://khoulefreres.com/$bookingId";
+    final callbackCancelUrl = "https://khoulefreres.com/$bookingId";
     final codeMarchand = dotenv.env['IDORANGEMONEY'] ?? '';
 
     final headers = {

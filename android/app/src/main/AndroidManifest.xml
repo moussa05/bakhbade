@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="bakhbade"
+        android:label="BakhBaDe"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         
@@ -20,15 +20,13 @@
             </intent-filter>
             
             <!-- Deep link intent filter -->
+            <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
             <intent-filter android:autoVerify="true">
-            <action android:name="android.intent.action.VIEW" />
-
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-
-            <data android:scheme="http" />
-            <data android:scheme="https" />
-            <data android:host="khoulesfrere.dynalinks.app" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="khoulefreres.com"  android:pathPrefix="/booking"/>
+                <data android:scheme="https" android:host="khoulefreres.com"  android:pathPrefix="/booking"/>
             </intent-filter>
 
         </activity>
