@@ -1,0 +1,4 @@
+- flutter-test:
+    inputs:
+      tests_path_pattern: "test/**/*.dart"
+      generate_code_coverage_files: false
