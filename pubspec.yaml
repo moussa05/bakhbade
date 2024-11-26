@@ -48,6 +48,7 @@ dependencies:
   path: ^1.9.0
   card_swiper: ^3.0.1
   flutter_facebook_auth: ^7.1.0
+  win32: ^5.5.0
   
 
 dev_dependencies:
