@@ -1,5 +1,4 @@
 import 'package:bakhbade/Acueil.dart';
-import 'package:bakhbade/Screen/e-commerce/CommerceHomeScreen.dart';
 import 'package:bakhbade/Screen/formation/FormationHomeScreen.dart';
 import 'package:bakhbade/Screen/voyage/BookingListScreen.dart';
 import 'package:bakhbade/WelcomePage.dart';
@@ -148,4 +147,3 @@ class _HomeState extends State<Home> {
         ));
   }
 }
-

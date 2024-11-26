@@ -4,19 +4,25 @@ workflows:
     environment:
       flutter: stable
       xcode: latest
-    scripts:
-      - name: Installer les dépendances Flutter
-        script: flutter pub get
-
-    # Build Android APK
-   
-    
-      - name: Build iOS IPA
-        script: flutter build ipa --release
-
-    artifacts:
-      - build/app/outputs/flutter-apk/*.apk
-      - build/ios/ipa/*.ipa
+      scripts:
+    - name: Set up code signing settings on Xcode project
+      script: | 
+        xcode-project use-profiles
+    - name: Get Flutter packages
+      script: | 
+        flutter pub get
+    - name: Install pods
+      script: | 
+        find . -name "Podfile" -execdir pod install \;
+    - name: Flutter build ipa
+      script: | 
+        flutter build ipa --release \
+          --build-name=1.0.0 \
+          --export-options-plist=/Users/builder/export_options.plist
+  artifacts:
+    - build/ios/ipa/*.ipa
+    - /tmp/xcodebuild_logs/*.log
+    - flutter_drive.log
 
     publishing:
       email:

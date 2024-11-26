@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:bakhbade/Home.dart';
-import 'package:bakhbade/Screen/voyage/HomeScreen.dart';
 import 'package:bakhbade/Screen/voyage/VoyageListeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +12,7 @@ class Acueil extends StatefulWidget {
 }
 
 class _AcueilState extends State<Acueil> {
-  int _selectedIndex = 0; // Indice pour le BottomNavigationBar
+  //int _selectedIndex = 0; // Indice pour le BottomNavigationBar
 
   String _fullname = 'Invité';
   String _fidelite = '0';

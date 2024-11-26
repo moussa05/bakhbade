@@ -116,7 +116,7 @@ class PaymentService {
             Uri.parse("$bookingApiUrl/$booking/payment/${data['id']}");
         final response2 =
             await http.post(bookingPaymentUri, headers: headersBooking);
-        print('Payment URL Response: $data');
+        print('Payment URL Response: $data $response2 ');
         return data;
       } else {
         print(

@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:bakhbade/Home.dart';
-import 'package:bakhbade/Screen/login/LoginPage.dart';
 import 'package:bakhbade/Screen/voyage/BookingPage.dart';
 import 'package:bakhbade/WelcomePage.dart';
 import 'dart:async';
@@ -30,6 +29,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    print(_isFirstTime);
     _initializeApp();
   }
 

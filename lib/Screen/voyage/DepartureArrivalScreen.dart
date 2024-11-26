@@ -480,8 +480,7 @@ class _DepartureArrivalScreenState extends State<DepartureArrivalScreen> {
                                     if (!widget.isForMe) {
                                       if (firstNameController.text.isEmpty ||
                                           lastNameController.text.isEmpty ||
-                                          phoneController.text.isEmpty ||
-                                          selectedGender == null) {
+                                          phoneController.text.isEmpty) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           SnackBar(

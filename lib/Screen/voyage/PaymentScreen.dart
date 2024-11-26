@@ -1,4 +1,3 @@
-import 'package:bakhbade/models/database.dart';
 import 'package:flutter/material.dart';
 import 'package:bakhbade/Screen/login/BusWidget.dart';
 import 'package:bakhbade/models/Location.dart';
@@ -7,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bakhbade/services/PaymentService.dart';
-import 'package:bakhbade/models/PaymentMode.dart';
 
 class PaymentScreen extends StatefulWidget {
   final Location departure;
@@ -120,7 +118,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             errorUrl: errorUrl,
           );
           if (paymentResponse != null || paymentResponse['id'] != null) {
-            print(paymentResponse['id']);
+            //print(paymentResponse['id']);
             // Launch the provided URL if the API response is successful
             // var newPayment = PaymentMode(
             //     id: jsonResponse["data"]["id"], // ID unique généré par l'API

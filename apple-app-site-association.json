@@ -1,0 +1,23 @@
+{
+    "applinks": {
+      "apps": [],
+      "details": [
+        {
+            "appIDs": ["<TEAM_ID>.com.example.khoulefreres"], 
+            "paths": ["/booking/*"],
+          
+          
+          "components": [
+            {
+              "/": "/*"
+            }
+          ]
+        }
+      ]
+    },
+    "webcredentials": {
+      "apps": [
+        "S8QB4VV633.com.example.deeplinkCookbook"
+      ]
+    }
+  }

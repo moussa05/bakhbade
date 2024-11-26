@@ -117,11 +117,11 @@ class _WelcomePageState extends State<WelcomePage> {
       return;
     }
 
-    var headers = {
-      'Authorization': 'Bearer $accessToken',
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    };
+    // var headers = {
+    //   'Authorization': 'Bearer $accessToken',
+    //   'Content-Type': 'application/json',
+    //   'Accept': 'application/json',
+    // };
 
     var url =
         Uri.parse('https://graph.facebook.com/v17.0/$phoneNumberId/messages');
