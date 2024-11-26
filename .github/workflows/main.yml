@@ -8,30 +8,41 @@ jobs:
     name: 🎉 iOS Build
     runs-on: macos-latest
     steps:
+      # Étape 1: Récupérer le code source
       - uses: actions/checkout@v3
 
+      # Étape 2: Installer Flutter
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           architecture: x64
-      - run: flutter pub get
-      
 
+      # Étape 3: Installer les dépendances Flutter
+      - run: flutter pub get
+
+      # Étape 4: Mettre à jour les pods pour iOS
       - run: pod repo update
         working-directory: ios
 
+      # Étape 5: Nettoyer le projet pour éviter les conflits
+      - run: flutter clean
+
+      # Étape 6: Construire l'application iOS
       - run: flutter build ios --release --no-codesign
 
+      # Étape 7: Préparer le fichier Payload pour créer l'IPA
       - run: mkdir Payload
         working-directory: build/ios/iphoneos
 
       - run: mv Runner.app/ Payload
         working-directory: build/ios/iphoneos
 
+      # Étape 8: Créer un fichier ZIP (IPA)
       - name: Zip output
         run: zip -qq -r -9 FlutterIpaExport.ipa Payload
         working-directory: build/ios/iphoneos
 
+      # Étape 9: Télécharger l'IPA vers GitHub Releases
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
