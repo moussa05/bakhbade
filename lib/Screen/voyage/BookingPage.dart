@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bakhbade/Screen/voyage/BookingDetailsScreen.dart';
+import 'package:bakhbade/Screen/voyage/bookingDetailsScreen.dart';
 import 'package:bakhbade/Services/bookingservice.dart';
 import 'package:bakhbade/models/Booking.dart';
 

@@ -1,4 +1,4 @@
-package com.example.bakhbade
+package com.khoule.bakhbade
 
 import io.flutter.embedding.android.FlutterActivity
 

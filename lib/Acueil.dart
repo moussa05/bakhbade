@@ -1,5 +1,5 @@
-import 'package:bakhbade/Home.dart';
-import 'package:bakhbade/Screen/voyage/VoyageListeScreen.dart';
+import 'package:bakhbade/home.dart';
+import 'package:bakhbade/Screen/voyage/voyageListeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -27,6 +27,76 @@ class _AcueilState extends State<Acueil> {
   Future<void> _launchUrl(Uri _url) async {
     if (!await launchUrl(_url)) {
       throw Exception('Could not launch $_url');
+    }
+  }
+
+  void _showContactOptions(BuildContext context, String phoneNumber) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Nous Contacter"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.phone, color: Colors.green),
+                title: const Text("Appeler"),
+                onTap: () {
+                  Navigator.pop(context); // Ferme le dialog
+                  _makePhoneCall(
+                      phoneNumber); // Utilise le numéro passé en argument
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.message, color: Colors.blue),
+                title: const Text("Envoyer un SMS"),
+                onTap: () {
+                  Navigator.pop(context); // Ferme le dialog
+                  _sendSms(phoneNumber); // Utilise le numéro passé en argument
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.chat, color: Colors.green),
+                title: const Text("WhatsApp"),
+                onTap: () {
+                  Navigator.pop(context); // Ferme le dialog
+                  _openWhatsApp(
+                      phoneNumber); // Utilise le numéro passé en argument
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri phoneUri = Uri(scheme: 'tel', path: phoneNumber);
+
+    if (await canLaunchUrl(phoneUri)) {
+      await _launchUrl(phoneUri);
+    } else {
+      throw 'Impossible de passer un appel à $phoneNumber';
+    }
+  }
+
+  Future<void> _sendSms(String phoneNumber) async {
+    final Uri smsUri = Uri(scheme: 'sms', path: phoneNumber);
+    if (await canLaunchUrl(smsUri)) {
+      await launchUrl(smsUri);
+    } else {
+      throw 'Impossible d’envoyer un SMS à $phoneNumber';
+    }
+  }
+
+  Future<void> _openWhatsApp(String phoneNumber) async {
+    final Uri whatsappUri = Uri.parse('https://wa.me/$phoneNumber');
+    if (await canLaunchUrl(whatsappUri)) {
+      await launchUrl(whatsappUri);
+    } else {
+      throw 'Impossible d’ouvrir WhatsApp pour $phoneNumber';
     }
   }
 
@@ -232,8 +302,42 @@ class _AcueilState extends State<Acueil> {
                 ],
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20), // Espacement entre les sections
             // Affichage des points de fidélité
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildIconCard(
+                  label: '+221 77 361 13 04',
+                  imagePath: 'assets/images/appel.png',
+                  color: Color.fromARGB(255, 126, 202, 75),
+                  onPressed: () async {
+                    _showContactOptions(context, "+221773611304");
+                  },
+                ),
+                _buildIconCard(
+                  label: '+221 77 602 96 74',
+                  imagePath: 'assets/images/appel.png',
+                  color: Color.fromARGB(255, 126, 202, 75),
+                  onPressed: () {
+                    _showContactOptions(context, "+221776029674");
+                    // Naviguer vers une autre page ou exécuter une action
+                  },
+                ),
+                _buildIconCard(
+                  label: '+221 77 490 12 12',
+                  imagePath: 'assets/images/appel.png',
+                  color: Color.fromARGB(255, 126, 202, 75),
+                  onPressed: () {
+                    _showContactOptions(context, "+221774901212");
+                    // Naviguer vers une autre page ou exécuter une action
+                  },
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 20),
           ],
         ),
       ),

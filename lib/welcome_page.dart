@@ -12,7 +12,7 @@ class WelcomePage extends StatefulWidget {
 }
 
 final List<String> imagePaths = [
-  "assets/welcome/ticket.png",
+  "assets/welcome/voyage.png",
   "assets/welcome/achats.png",
   "assets/welcome/formation.png",
   "assets/welcome/colis.png",
@@ -77,12 +77,26 @@ class _WelcomePageState extends State<WelcomePage> {
     return regex.hasMatch(phone);
   }
 
-  void _showSnackBar(String message) {
+  void _showSnackBar(String message,
+      {Color? backgroundColor, IconData? icon, Duration? duration}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-        duration: Duration(seconds: 2),
+        content: Row(
+          children: [
+            if (icon != null) Icon(icon, color: Colors.white),
+            if (icon != null) SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                message,
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: backgroundColor ?? Colors.red,
+        duration: duration ?? Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
   }
@@ -99,11 +113,19 @@ class _WelcomePageState extends State<WelcomePage> {
         print('OTP enregistré avec succès');
       } else {
         print('Échec de l\'enregistrement de l\'OTP : ${response.body}');
-        _showSnackBar('Échec de l\'enregistrement de l\'OTP.');
+        _showSnackBar(
+          "Échec de l'enregistrement de l'OTP",
+          backgroundColor: Colors.red,
+          icon: Icons.error,
+        );
       }
     } catch (e) {
       print('Erreur lors de l\'enregistrement : $e');
-      _showSnackBar('Erreur lors de l\'enregistrement de l\'OTP.');
+      _showSnackBar(
+        "Erreur lors de l'enregistrement de l'OTP",
+        backgroundColor: Colors.red,
+        icon: Icons.error,
+      );
     }
   }
 
@@ -113,7 +135,11 @@ class _WelcomePageState extends State<WelcomePage> {
 
     if (accessToken.isEmpty || phoneNumberId.isEmpty) {
       print("Les variables d'environnement sont manquantes.");
-      _showSnackBar("Les variables d'environnement sont manquantes.");
+      _showSnackBar(
+        "Les variables d'environnement sont manquantes.",
+        backgroundColor: Colors.red,
+        icon: Icons.error,
+      );
       return;
     }
 
@@ -161,14 +187,27 @@ class _WelcomePageState extends State<WelcomePage> {
           body: body);
       if (response.statusCode == 200) {
         print("OTP envoyé avec succès : $otp");
-        _showSnackBar("OTP envoyé avec succès.");
+        _showSnackBar(
+          "OTP envoyé avec succès",
+          backgroundColor: Colors.green,
+          icon: Icons.check_circle,
+          duration: Duration(seconds: 5),
+        );
       } else {
         print("Erreur lors de l'envoi : ${response.body}");
-        _showSnackBar("Erreur lors de l'envoi : ${response.reasonPhrase}");
+        _showSnackBar(
+          "Erreur lors de l'envoi : ${response.reasonPhrase}",
+          backgroundColor: Colors.red,
+          icon: Icons.error,
+        );
       }
     } catch (e) {
       print("Erreur lors de la requête : $e");
-      _showSnackBar("Erreur lors de la requête : $e");
+      _showSnackBar(
+        "Erreur lors de l'envoi de la requête",
+        backgroundColor: Colors.red,
+        icon: Icons.error,
+      );
     }
   }
 
@@ -195,7 +234,11 @@ class _WelcomePageState extends State<WelcomePage> {
       setState(() => _isOtpForm = true);
     } catch (e) {
       print('Erreur lors de l\'enregistrement de l\'utilisateur : $e');
-      _showSnackBar('Erreur lors de l\'enregistrement de l\'utilisateur : $e');
+      _showSnackBar(
+        "Erreur lors de l'enregistrement de l'utilisateur ",
+        backgroundColor: Colors.red,
+        icon: Icons.error,
+      );
     } finally {
       setState(() => _isLoading = false);
     }
@@ -207,7 +250,11 @@ class _WelcomePageState extends State<WelcomePage> {
     if (!_otpFormKey.currentState!.validate()) return;
 
     if (_otpController.text.length != 6) {
-      _showSnackBar("Le code OTP doit contenir exactement 6 chiffres.");
+      _showSnackBar(
+        "Le code OTP doit contenir exactement 6 chiffres.",
+        backgroundColor: Colors.red,
+        icon: Icons.error,
+      );
       return;
     }
 
@@ -251,10 +298,18 @@ class _WelcomePageState extends State<WelcomePage> {
           ));
         }
       } else {
-        _showSnackBar('Erreur lors de la vérification de l\'OTP.');
+        _showSnackBar(
+          "Erreur lors de la vérification de l'OTP.",
+          backgroundColor: Colors.red,
+          icon: Icons.error,
+        );
       }
     } catch (e) {
-      _showSnackBar('Erreur lors de la connexion : $e');
+      _showSnackBar(
+        "Erreur lors de la connexion",
+        backgroundColor: Colors.red,
+        icon: Icons.error,
+      );
     } finally {
       setState(() => _isLoading = false);
     }
@@ -363,11 +418,19 @@ class _WelcomePageState extends State<WelcomePage> {
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              _showSnackBar("Numéro requis");
+              _showSnackBar(
+                "Numéro requis",
+                backgroundColor: Colors.red,
+                icon: Icons.error,
+              );
               return null;
             }
             if (!_isValidPhoneNumber(value)) {
-              _showSnackBar("Numéro invalide");
+              _showSnackBar(
+                "Numéro invalide",
+                backgroundColor: Colors.red,
+                icon: Icons.error,
+              );
               return null;
             }
             return null;
@@ -393,7 +456,11 @@ class _WelcomePageState extends State<WelcomePage> {
                   if (_isValidPhoneNumber(_phoneController.text)) {
                     setState(() => _isRegistering = true);
                   } else {
-                    _showSnackBar("Veuillez entrer un numéro valide");
+                    _showSnackBar(
+                      "Veuillez entrer un numéro valide",
+                      backgroundColor: Colors.red,
+                      icon: Icons.error,
+                    );
                   }
                 }
               : null,
@@ -506,7 +573,7 @@ class _WelcomePageState extends State<WelcomePage> {
           TextFormField(
             controller: _otpController,
             decoration: InputDecoration(
-              labelText: "Entrez le OTP",
+              labelText: "Entrez le code OTP WhatsApp",
               filled: true,
               fillColor: Colors.white,
               floatingLabelStyle: const TextStyle(color: Colors.amber),

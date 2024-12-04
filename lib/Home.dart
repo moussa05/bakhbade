@@ -1,7 +1,7 @@
-import 'package:bakhbade/Acueil.dart';
+import 'package:bakhbade/acueil.dart';
 import 'package:bakhbade/Screen/formation/FormationHomeScreen.dart';
 import 'package:bakhbade/Screen/voyage/BookingListScreen.dart';
-import 'package:bakhbade/WelcomePage.dart';
+import 'package:bakhbade/welcome_page.dart';
 import 'package:flutter/material.dart';
 import 'package:bakhbade/Screen/voyage/HomeScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
