@@ -44,7 +44,26 @@ class _BookingListScreenState extends State<BookingListScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Erreur: ${snapshot.error}'));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 50, color: Colors.red),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Vérifiez votre connexion',
+                    style: TextStyle(fontSize: 18, color: Colors.black),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      _refreshBookings(); // Relancer la requête
+                    },
+                    child: const Text('Réessayer'),
+                  ),
+                ],
+              ),
+            );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('Aucune réservation trouvée'));
           }
@@ -66,7 +85,6 @@ class _BookingListScreenState extends State<BookingListScreen> {
     );
   }
 
-  // Widget personnalisé pour afficher les informations du voyage
   Widget _buildTravelCard(BuildContext context, Map<String, dynamic> travel,
       Map<String, dynamic> booking) {
     return Card(
@@ -80,7 +98,6 @@ class _BookingListScreenState extends State<BookingListScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Titre du voyage
             Text(
               travel['name'] ?? 'Nom du Voyage',
               style: const TextStyle(
@@ -90,8 +107,6 @@ class _BookingListScreenState extends State<BookingListScreen> {
               ),
             ),
             const SizedBox(height: 8),
-
-            // Informations principales avec icônes
             _buildInfoRow(
               icon: FontAwesomeIcons.mapMarkerAlt,
               label: 'Départ',
@@ -123,8 +138,6 @@ class _BookingListScreenState extends State<BookingListScreen> {
               iconColor: Colors.red,
             ),
             const SizedBox(height: 10),
-
-            // Bouton pour voir les détails
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton.icon(
@@ -155,7 +168,6 @@ class _BookingListScreenState extends State<BookingListScreen> {
     );
   }
 
-  // Fonction pour afficher chaque ligne d'information avec une icône
   Widget _buildInfoRow({
     required IconData icon,
     required String label,
@@ -315,43 +327,43 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
                   ),
                 ),
 // Bouton pour voir la facture si elle est disponible
-              if (isPaid && widget.booking['invoice_link'] != null)
-                Center(
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      print(
-                          'Lien de la facture : ${widget.booking['invoice_link']}');
-                    },
-                    icon: const Icon(Icons.receipt),
-                    label: const Text('Voir la facture'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.white, // Texte en blanc
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  ),
-                ),
+              // if (isPaid && widget.booking['invoice_link'] != null)
+              //   Center(
+              //     child: ElevatedButton.icon(
+              //       onPressed: () {
+              //         print(
+              //             'Lien de la facture : ${widget.booking['invoice_link']}');
+              //       },
+              //       icon: const Icon(Icons.receipt),
+              //       label: const Text('Voir la facture'),
+              //       style: ElevatedButton.styleFrom(
+              //         backgroundColor: Colors.green,
+              //         foregroundColor: Colors.white, // Texte en blanc
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(20),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
 
-              // Bouton pour voir la facture si elle est disponible
-              if (isPaid && widget.booking['invoice_link'] != null)
-                Center(
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      print(
-                          'Lien de la facture : ${widget.booking['invoice_link']}');
-                    },
-                    icon: const Icon(Icons.receipt),
-                    label: const Text('Voir la facture'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  ),
-                ),
+              // // Bouton pour voir la facture si elle est disponible
+              // if (isPaid && widget.booking['invoice_link'] != null)
+              //   Center(
+              //     child: ElevatedButton.icon(
+              //       onPressed: () {
+              //         print(
+              //             'Lien de la facture : ${widget.booking['invoice_link']}');
+              //       },
+              //       icon: const Icon(Icons.receipt),
+              //       label: const Text('Voir la facture'),
+              //       style: ElevatedButton.styleFrom(
+              //         backgroundColor: Colors.green,
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(20),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
             ],
           ),
         ),

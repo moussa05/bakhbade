@@ -35,6 +35,7 @@ class _AcueilState extends State<Acueil> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           title: const Text("Nous Contacter"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -124,7 +125,7 @@ class _AcueilState extends State<Acueil> {
           style: TextStyle(fontSize: 18),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.menu),
+          icon: const Icon(Icons.person_3_rounded),
           onPressed: () {},
         ),
       ),
@@ -151,10 +152,33 @@ class _AcueilState extends State<Acueil> {
                   imagePath: 'assets/images/yobante.png',
                   color: const Color(0xFF84610F), // Couleur Yobanté
                   onPressed: () {
-                    var url =
-                        Uri.parse('https://bakhbade.com/service-yobante/');
-                    _launchUrl(url);
-                    // Naviguer vers une autre page ou exécuter une action
+                    // Afficher un dialog avec le message d'information
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: Colors.white,
+                          title: Text("Informations sur le Service Yobanté"),
+                          content: Text(
+                            "Pour le Service Yobanté, contactez les numéros suivants :\n"
+                            "776029674 ou 773611304 ou 767499096.\n\n"
+                            "Vous pouvez déposer aussi vos colis depuis notre Siège de Dakar à la Médina Rue 17 angle 20 (Horaire du lundi au samedi de 10h à 17h).",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Fermer le dialog
+                              },
+                              child: const Text(
+                                "Fermer",
+                                style: TextStyle(color: Colors.amber),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                 ),
                 _buildIconCard(

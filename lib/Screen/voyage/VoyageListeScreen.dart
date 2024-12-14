@@ -117,6 +117,7 @@ class _VoyageListeScreenState extends State<VoyageListeScreen> {
     setState(() {
       isLoading = true;
     });
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('api_token');
 
@@ -124,6 +125,7 @@ class _VoyageListeScreenState extends State<VoyageListeScreen> {
       setState(() {
         isLoading = false;
       });
+      showSnackBar("Erreur : Veuillez vous reconnecter.");
       return;
     }
 
@@ -147,10 +149,9 @@ class _VoyageListeScreenState extends State<VoyageListeScreen> {
         var responseBody = await response.stream.bytesToString();
         var decodedData = json.decode(responseBody) as Map<String, dynamic>;
         setState(() {
-          // Filter trips based on the path_id value
+          // Filtrer les voyages selon path_id
           trips = decodedData['data']?.where((trip) {
-                return trip['path_id'].toString() ==
-                    widget.pathId.toString(); // Filter trips by path_id
+                return trip['path_id'].toString() == widget.pathId.toString();
               }).toList() ??
               [];
           isLoading = false;
@@ -159,14 +160,26 @@ class _VoyageListeScreenState extends State<VoyageListeScreen> {
         setState(() {
           isLoading = false;
         });
-        print('Error: ${response.reasonPhrase}');
+        showSnackBar(
+            "Erreur serveur (${response.statusCode}) : ${response.reasonPhrase ?? "Impossible de charger les voyages."}");
+        print('Erreur serveur: ${response.reasonPhrase}');
       }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      print('Error: $e');
+      showSnackBar("Erreur réseau : Vérifiez votre connexion internet.");
+      print('Erreur: $e');
     }
+  }
+
+  void showSnackBar(String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 3),
+      backgroundColor: Colors.red,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -176,97 +189,133 @@ class _VoyageListeScreenState extends State<VoyageListeScreen> {
       appBar: AppBar(title: Text('Voyages')),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: fetchTrips,
-              child: ListView.builder(
-                itemCount: trips.length,
-                itemBuilder: (context, index) {
-                  final trip = trips[index];
-                  return Card(
+          : trips.isEmpty
+              ? Center(
+                  child: Card(
+                    margin: EdgeInsets.all(16),
                     elevation: 5,
-                    margin: EdgeInsets.all(10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: Padding(
-                      padding: const EdgeInsets.all(15.0),
+                      padding: const EdgeInsets.all(20.0),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          Icon(
+                            Icons.airplane_ticket,
+                            size: 50,
+                            color: Colors.amber,
+                          ),
+                          SizedBox(height: 16),
                           Text(
-                            trip['name'] ?? 'Trip Name',
+                            "Nous ne disposons pas de voyage pour le moment.",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 18,
+                              color: Colors.grey[700],
                               fontWeight: FontWeight.bold,
                             ),
-                          ),
-                          SizedBox(height: 8),
-                          Divider(
-                            color: Colors.black,
-                            thickness: 1,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  FaIcon(FontAwesomeIcons.calendarAlt,
-                                      size: 16, color: Colors.amber),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    'Date: ${trip['at_date_short'] ?? 'Unknown'}',
-                                    style: TextStyle(
-                                        fontSize: 14, color: Colors.grey),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  FaIcon(FontAwesomeIcons.moneyBill,
-                                      size: 16, color: Colors.amber),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    '${trip['price'] ?? 'Unknown'} CFA',
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.black),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  showReservationDialog(
-                                      context, trip); // Open dialog
-                                },
-                                child: Text('Réserver',
-                                    style: TextStyle(
-                                        fontSize: 18, color: Colors.black)),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.yellow[700],
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  String travelId =
-                                      trip['id'].toString(); // Get travel ID
-                                  String message =
-                                      'Bonjour, veuillez cliquer sur le lien suivant pour faire votre réservation pour ${trip['name']}: https://khoulefreres.com/booking/create?travel_id=$travelId';
-
-                                  SocialShare.shareWhatsapp(message);
-                                },
-                                child: Text('Partager'),
-                              ),
-                            ],
                           ),
                         ],
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
+                  ),
+                )
+              : RefreshIndicator(
+                  onRefresh: fetchTrips,
+                  child: ListView.builder(
+                    itemCount: trips.length,
+                    itemBuilder: (context, index) {
+                      final trip = trips[index];
+                      return Card(
+                        elevation: 5,
+                        margin: EdgeInsets.all(10),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                trip['name'] ?? 'Trip Name',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Divider(
+                                color: Colors.black,
+                                thickness: 1,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      FaIcon(FontAwesomeIcons.calendarAlt,
+                                          size: 16, color: Colors.amber),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        'Date: ${trip['at_date_short'] ?? 'Unknown'}',
+                                        style: TextStyle(
+                                            fontSize: 14, color: Colors.grey),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      FaIcon(FontAwesomeIcons.moneyBill,
+                                          size: 16, color: Colors.amber),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        '${trip['price'] ?? 'Unknown'} CFA',
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      showReservationDialog(
+                                          context, trip); // Open dialog
+                                    },
+                                    child: Text('Réserver',
+                                        style: TextStyle(
+                                            fontSize: 18, color: Colors.black)),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.yellow[700],
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      String travelId = trip['id']
+                                          .toString(); // Get travel ID
+                                      String message =
+                                          'Bonjour, veuillez cliquer sur le lien suivant pour faire votre réservation pour ${trip['name']}: https://khoulefreres.com/booking/create?travel_id=$travelId';
+
+                                      SocialShare.shareWhatsapp(message);
+                                    },
+                                    child: Text('Partager'),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
     );
   }
 }

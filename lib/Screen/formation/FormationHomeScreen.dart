@@ -1,6 +1,9 @@
 import 'package:bakhbade/Services/api_service.dart';
 import 'package:bakhbade/models/Formation.dart';
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart' as htmlparser;
+import 'package:html/dom.dart' as dom;
+import 'package:flutter_html/flutter_html.dart';
 
 class FormationListScreen extends StatefulWidget {
   @override
@@ -23,7 +26,27 @@ class _FormationListScreenState extends State<FormationListScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Erreur: ${snapshot.error}'));
+            // Vérification de l'erreur
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 50, color: Colors.red),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Vérifiez votre connexion',
+                    style: TextStyle(fontSize: 18, color: Colors.black),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {}); // Réessayer
+                    },
+                    child: const Text('Réessayer'),
+                  ),
+                ],
+              ),
+            );
           } else if (snapshot.hasData && snapshot.data != null) {
             final formations = snapshot.data!;
             return ListView.builder(
@@ -92,35 +115,48 @@ class FormationDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.orange[50],
       appBar: AppBar(
+        backgroundColor: Colors.orange,
         title: Text(formation.nom),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              formation.nom,
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 15),
-            Text(formation.description, style: const TextStyle(fontSize: 16)),
-            const SizedBox(height: 20),
-            Text('Coût: ${formation.coutMin} CFA',
-                style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 10),
-            Text(
-              formation.modePaiementTranches
-                  ? 'Payable par tranches'
-                  : 'Paiement unique',
-              style: TextStyle(
-                fontSize: 18,
-                color:
-                    formation.modePaiementTranches ? Colors.green : Colors.red,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                formation.nom,
+                style:
+                    const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-            ),
-          ],
+              const SizedBox(height: 15),
+              Html(
+                data: formation.description,
+                style: {
+                  "body": Style(
+                      fontSize:
+                          FontSize(16)), // Style personnalisé pour le texte
+                },
+              ),
+              const SizedBox(height: 20),
+              Text('Coût: ${formation.coutMin} CFA',
+                  style: const TextStyle(fontSize: 18)),
+              const SizedBox(height: 10),
+              Text(
+                formation.modePaiementTranches
+                    ? 'Payable par tranches'
+                    : 'Paiement unique',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: formation.modePaiementTranches
+                      ? Colors.green
+                      : Colors.red,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

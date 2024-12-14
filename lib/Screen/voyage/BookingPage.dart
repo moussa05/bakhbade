@@ -1,46 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:bakhbade/Screen/voyage/bookingDetailsScreen.dart';
+import 'package:bakhbade/Screen/voyage/BookingListScreen.dart';
 import 'package:bakhbade/Services/bookingservice.dart';
-import 'package:bakhbade/models/Booking.dart';
 
 class BookingPage extends StatefulWidget {
   final int bookingId;
 
-  BookingPage({required this.bookingId});
+  BookingPage({required this.bookingId, Key? key}) : super(key: key);
 
   @override
   _BookingPageState createState() => _BookingPageState();
 }
 
 class _BookingPageState extends State<BookingPage> {
-  Booking? booking;
+  late Map<String, dynamic> booking;
+  bool isLoading = true;
+  String? errorMessage;
 
   @override
   void initState() {
     super.initState();
-    fetchBooking(widget.bookingId).then((value) {
-      setState(() {
-        booking = value;
-      });
+    _fetchBooking();
+  }
+
+  Future<void> _fetchBooking() async {
+    setState(() {
+      isLoading = true;
+      errorMessage = null;
     });
+    try {
+      final response = await fetchBooking(widget.bookingId);
+
+      setState(() {
+        booking = response ?? {};
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        errorMessage = "Erreur lors du chargement de la réservation : $e";
+        isLoading = false;
+      });
+    }
   }
 
   Future<void> _refreshBooking() async {
-    final updatedBooking = await fetchBooking(widget.bookingId);
-    setState(() {
-      booking = updatedBooking;
-    });
+    await _fetchBooking();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: _refreshBooking,
-        child: booking == null
-            ? Center(child: CircularProgressIndicator())
-            : BookingDetailsScreen(booking: booking!),
+      appBar: AppBar(
+        title: Text('Détails de la réservation'),
       ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : errorMessage != null
+              ? Center(child: Text(errorMessage!))
+              : RefreshIndicator(
+                  onRefresh: _refreshBooking,
+                  child: BookingDetailScreen(booking: booking),
+                ),
     );
   }
 }

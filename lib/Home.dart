@@ -73,77 +73,83 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.orange[50],
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.orange,
-          elevation: 0,
-          title: const Text('BakhBaDé'),
-          actions: [
-            TextButton.icon(
-              icon: const Icon(Icons.logout, color: Colors.white),
-              label: const Text(
-                'Se déconnecter',
-                style: TextStyle(color: Colors.white),
-              ),
-              onPressed: () async {
-                // Confirmation avant la déconnexion
-                bool? confirmLogout = await showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      backgroundColor: Colors.white,
-                      title: const Text('Déconnexion'),
-                      content:
-                          const Text('Voulez-vous vraiment vous déconnecter ?'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: const Text('Annuler'),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, true),
-                          child: const Text('Oui'),
-                        ),
-                      ],
-                    );
-                  },
-                );
+    return WillPopScope(
+      onWillPop: () async {
+        // Retourne `false` pour empêcher la navigation en arrière
+        return false;
+      },
+      child: Scaffold(
+          backgroundColor: Colors.orange[50],
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.orange,
+            elevation: 0,
+            title: const Text('BakhBaDé'),
+            actions: [
+              TextButton.icon(
+                icon: const Icon(Icons.logout, color: Colors.white),
+                label: const Text(
+                  'Se déconnecter',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () async {
+                  // Confirmation avant la déconnexion
+                  bool? confirmLogout = await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor: Colors.white,
+                        title: const Text('Déconnexion'),
+                        content: const Text(
+                            'Voulez-vous vraiment vous déconnecter ?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('Annuler'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text('Oui'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
 
-                if (confirmLogout == true) {
-                  await _logout();
-                }
-              },
-            ),
-          ],
-        ),
-        body: _pages[_selectedIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Color.fromARGB(225, 255, 255, 255),
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.orange,
-          unselectedItemColor: Colors.grey,
-          onTap: _onItemTapped,
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-              icon: _buildIcon('assets/images/home.png', 0),
-              label: 'Accueil',
-            ),
-            BottomNavigationBarItem(
-              icon: _buildIcon('assets/images/voyageB.png', 1),
-              label: 'Voyages',
-            ),
-            BottomNavigationBarItem(
-              icon: _buildIcon('assets/images/Formationss.png', 2),
-              label: 'Formation',
-            ),
-            BottomNavigationBarItem(
-              icon: _buildIcon('assets/images/reservations.png', 3),
-              label: 'Mes Reservations',
-            ),
-          ],
-        ));
+                  if (confirmLogout == true) {
+                    await _logout();
+                  }
+                },
+              ),
+            ],
+          ),
+          body: _pages[_selectedIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Color.fromARGB(225, 255, 255, 255),
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.orange,
+            unselectedItemColor: Colors.grey,
+            onTap: _onItemTapped,
+            type: BottomNavigationBarType.fixed,
+            items: [
+              BottomNavigationBarItem(
+                icon: _buildIcon('assets/images/home.png', 0),
+                label: 'Accueil',
+              ),
+              BottomNavigationBarItem(
+                icon: _buildIcon('assets/images/voyageB.png', 1),
+                label: 'Voyages',
+              ),
+              BottomNavigationBarItem(
+                icon: _buildIcon('assets/images/Formationss.png', 2),
+                label: 'Formation',
+              ),
+              BottomNavigationBarItem(
+                icon: _buildIcon('assets/images/reservations.png', 3),
+                label: 'Mes Reservations',
+              ),
+            ],
+          )),
+    );
   }
 }

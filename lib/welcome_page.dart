@@ -438,6 +438,7 @@ class _WelcomePageState extends State<WelcomePage> {
         ),
         SizedBox(height: 10),
         CheckboxListTile(
+          activeColor: Colors.amber,
           value: _isChecked,
           onChanged: (value) => setState(() => _isChecked = value!),
           title: Text(
