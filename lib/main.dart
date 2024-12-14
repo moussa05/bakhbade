@@ -136,13 +136,15 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: const Color(0xFFFFB300),
-        colorScheme: ColorScheme.fromSwatch().copyWith(
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.amber,
+        ).copyWith(
           secondary: const Color(0xFFFFCC80),
+          background: const Color(0xFFF5F5F5), // Define background color here
         ),
-        backgroundColor: const Color(0xFFF5F5F5),
         cardColor: const Color(0xFFFFFFFF),
         textTheme: const TextTheme(
-          bodyText1: TextStyle(color: Color(0xFF000000)),
+          bodyMedium: TextStyle(color: Color(0xFF000000)), // Use bodyMedium
         ),
       ),
       routerConfig: _router,
